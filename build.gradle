@@ -1,0 +1,30 @@
+group 'com.tellh'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'org.springframework:spring-test:4.3.3.RELEASE'
+
+    compile fileTree(dir: 'lib', include: ['*.jar'])
+
+    compile 'org.springframework:spring-context:4.3.3.RELEASE'
+    compile 'org.springframework:spring-web:4.3.3.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.3.3.RELEASE'
+    compile 'org.springframework:spring-orm:4.3.3.RELEASE'
+    compile 'mysql:mysql-connector-java:5.1.38'
+    compile 'org.aspectj:aspectjrt:1.8.9'
+    compile 'org.aspectj:aspectjweaver:1.8.9'
+    compile 'org.hibernate:hibernate-core:5.2.3.Final'
+    compile 'org.hibernate:hibernate-c3p0:5.2.3.Final'
+    compile 'com.alibaba:fastjson:1.2.17'
+
+}

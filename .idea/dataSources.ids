@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - hotel_management@localhost" uuid="74c73f4c-8a06-44ef-a674-5db19268527a">
+    <database-info product="MySQL" version="5.7.11" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.5">
+      <schema id="1" name="hotel_management"/>
+      <table id="2" parent="1" name="customer"/>
+      <table id="3" parent="1" name="order"/>
+      <table id="4" parent="1" name="room"/>
+      <column id="5" parent="2" name="cid">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="6" parent="2" name="idNum">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="7" parent="2" name="isVIP">
+        <mandatory>1</mandatory>
+        <data-type>bit(1)</data-type>
+      </column>
+      <column id="8" parent="2" name="name">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <key id="9" parent="2" name="PRIMARY">
+        <columns>cid</columns>
+        <primary>1</primary>
+      </key>
+      <column id="10" parent="3" name="oid">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="11" parent="3" name="date_check_in">
+        <data-type>datetime</data-type>
+      </column>
+      <column id="12" parent="3" name="deadline">
+        <data-type>datetime</data-type>
+      </column>
+      <column id="13" parent="3" name="state">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="14" parent="3" name="cid">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="15" parent="3" name="rid">
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="16" parent="3" name="FK20k3m70dug0oq1s68n1i7oqlc">
+        <columns>rid</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="17" parent="3" name="FKqbhxoj3khrgh1alytif5dyp4">
+        <columns>cid</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="18" parent="3" name="PRIMARY">
+        <columns>oid</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="19" parent="3" name="FK20k3m70dug0oq1s68n1i7oqlc">
+        <columns>rid</columns>
+        <ref-key>~.room.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="20" parent="3" name="FKqbhxoj3khrgh1alytif5dyp4">
+        <columns>cid</columns>
+        <ref-key>~.customer.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="21" parent="4" name="rid">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="22" parent="4" name="description">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="23" parent="4" name="is_free">
+        <data-type>bit(1)</data-type>
+      </column>
+      <column id="24" parent="4" name="pic_url">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="25" parent="4" name="price">
+        <mandatory>1</mandatory>
+        <data-type>float</data-type>
+      </column>
+      <column id="26" parent="4" name="room_no">
+        <data-type>varchar(100)</data-type>
+      </column>
+      <column id="27" parent="4" name="size">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="28" parent="4" name="type">
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="29" parent="4" name="UK_mna8ilkl1xyq2j47tld36dbfy">
+        <columns>room_no</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="30" parent="4" name="PRIMARY">
+        <columns>rid</columns>
+        <primary>1</primary>
+      </key>
+      <key id="31" parent="4" name="UK_mna8ilkl1xyq2j47tld36dbfy">
+        <columns>room_no</columns>
+        <underlying-index>UK_mna8ilkl1xyq2j47tld36dbfy</underlying-index>
+      </key>
+    </database-model>
+  </data-source>
+</component>

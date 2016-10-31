@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="com.tellh.dao"/>
+    <context:component-scan base-package="com.tellh.service"/>
+
+    <!-- 加载配置文件 -->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="user" value="${user}"/>
+        <property name="password" value="${password}"/>
+        <property name="driverClass" value="${driverClass}"/>
+        <property name="jdbcUrl" value="${jdbcUrl}"/>
+        <property name="initialPoolSize" value="${jdbc.initPoolSize}"/>
+        <property name="minPoolSize" value="${jdbc.minPoolSize}"/>
+        <property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
+        <property name="maxIdleTime" value="${jdbc.c3p0.maxIdleTime}"/>
+    </bean>
+
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan">
+            <!--持久化类的位置，通过包进行扫描-->
+            <list>  <!-- 可以加多个包 -->
+                <value>com.tellh.entity</value>
+            </list>
+        </property>
+        <!--<property name="configLocation" value="hibernate.cfg.xml"/>-->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+                <prop key="hibernate.connection.isolation">2</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 配置Spring的声明式事务-->
+    <!--1. 配置事务管理器-->
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--2. 配置事务通知，属性-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="list*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--3. 配置事务切点，将切点与事务关联起来-->
+    <aop:config>
+        <aop:pointcut id="pointcut" expression="execution(* com.tellh.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+    </aop:config>
+</beans>
