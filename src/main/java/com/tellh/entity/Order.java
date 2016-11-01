@@ -9,6 +9,9 @@ import java.util.Date;
 /**
  * Created by tlh on 2016/10/30.
  */
+@NamedQueries({
+        @NamedQuery(name = "ByState",query = "select o from Order o where state=:state")
+})
 @Entity
 @Table(name = "order", schema = "hotel_management")
 public class Order {
@@ -32,6 +35,9 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rid")
     private Room room;
+
+    @Transient
+    private int days;
     private State state = State.VALID;
 
     public boolean isValid() {
@@ -84,5 +90,13 @@ public class Order {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
     }
 }

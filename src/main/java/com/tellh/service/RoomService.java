@@ -1,7 +1,5 @@
 package com.tellh.service;
 
-import com.sun.net.httpserver.Authenticator;
-import com.tellh.DatabaseException;
 import com.tellh.dao.RoomDao;
 import com.tellh.entity.Room;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +48,14 @@ public class RoomService {
         return dao.listAll(pageIndex, pageSize);
     }
 
-    public void checkIn(String roomNum) {
-        dao.checkIn(roomNum);
-        // TODO: 2016/10/31 插入订单记录
-    }
+//    public void checkIn(String roomNum) {
+//        dao.checkIn(roomNum);
+//         TODO: 2016/10/31 插入订单记录
+//    }
 
-    public void checkOut(String roomNum) {
-        dao.checkOut(roomNum);
-        // TODO: 2016/10/31 更新订单状态
-    }
+//    public void checkOut(String roomNum) {
+//        dao.checkOut(roomNum);
+//         TODO: 2016/10/31 更新订单状态
+//    }
+//     TODO: 2016/11/1 动态条件查询，过滤
 }

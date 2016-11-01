@@ -48,4 +48,5 @@ public class CustomerDao extends BaseDao {
         Hibernate.initialize(getByIdNum(idNum).getOrders());
         return getByIdNum(idNum).getOrders();
     }
+
 }

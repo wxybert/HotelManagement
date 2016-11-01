@@ -17,16 +17,6 @@ public class RoomServiceTest {
     @Autowired
     RoomService service;
 
-    @Test
-    public void checkIn() throws Exception {
-        service.checkIn("100");
-    }
-
-    @Test
-    public void checkOut() throws Exception {
-        service.checkOut("100");
-    }
-
     @Before
     public void before() {
         System.out.println("**************************");

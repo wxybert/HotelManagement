@@ -3,6 +3,7 @@ package com.tellh.service;
 import com.tellh.dao.CustomerDao;
 import com.tellh.entity.Customer;
 import com.tellh.entity.Order;
+import com.tellh.entity.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +53,32 @@ public class CustomerService {
 
     public List<Order> listAllOrders(String idNum) {
         return customerDao.listAllOrders(idNum);
+    }
+
+    public Room getRoomHasCheckIn(String idNum) {
+        Order validOrder = getByIdNum(idNum).getValidOrder();
+        if (validOrder == null)
+            return null;
+        return validOrder.getRoom();
+    }
+
+    public Room getRoomNeedToCheckOut(String idNum) {
+        List<Order> orders = getByIdNum(idNum).getOrders();
+        if (orders.isEmpty())
+            return null;
+        Order order = orders.get(0);
+        if (order.getState() == Order.State.CHECK_OUT)
+            return null;
+        return order.getRoom();
+    }
+
+    public static Room getRoomNeedToCheckOut(Customer customer) {
+        List<Order> orders = customer.getOrders();
+        if (orders.isEmpty())
+            return null;
+        Order order = orders.get(0);
+        if (order.getState() == Order.State.CHECK_OUT)
+            return null;
+        return order.getRoom();
     }
 }
