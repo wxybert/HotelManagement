@@ -46,8 +46,7 @@ public class Order {
     }
 
     public State getState() {
-        // TODO: 2016/11/2 测试是否会自动flush
-        if (state != State.EXPIRE && new Timestamp(System.currentTimeMillis()).after(deadline))
+        if (state == State.VALID && new Timestamp(System.currentTimeMillis()).after(deadline))
             state = State.EXPIRE;
         return state;
     }
@@ -102,5 +101,16 @@ public class Order {
 
     public void setDays(int days) {
         this.days = days;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "dCheckIn=" + dCheckIn +
+                ", deadline=" + deadline +
+                ", customer=" + customer +
+                ", room=" + room.getRoomNo() +
+                ", state=" + state.name() +
+                '}';
     }
 }

@@ -16,7 +16,7 @@ public class OrderDao extends BaseDao {
 
     public List<Order> listByState(Order.State state) {
         return getSession().getNamedQuery("ByState")
-                .setParameter("state", state.ordinal())
+                .setParameter("state", state)
                 .list();
     }
 

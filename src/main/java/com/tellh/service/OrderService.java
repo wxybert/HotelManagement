@@ -7,6 +7,7 @@ import com.tellh.entity.Customer;
 import com.tellh.entity.Order;
 import com.tellh.entity.OrderMessage;
 import com.tellh.entity.Room;
+import com.tellh.entity.model.OrderModel;
 import com.tellh.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by tlh on 2016/11/1.
@@ -27,15 +29,15 @@ public class OrderService {
     @Autowired
     private RoomDao roomDao;
 
-    public OrderMessage orderRoom(Order order, String customerIdNum, String roomNum) {
-        int days = order.getDays();
+    public OrderMessage orderRoom(OrderModel model) {
+        int days = model.getDays();
         if (days == 0) {
             OrderMessage message = new OrderMessage();
             message.setCode(OrderMessage.Code.FAILED_CHECK_IN);
             message.setMsg("您要订几天呢？");
             return message;
         }
-        Customer customer = customerDao.getByIdNum(customerIdNum);
+        Customer customer = customerDao.getByIdNum(model.getCustomerIdNum());
         //有房间未退，不能开房
         if (CustomerService.getOrderNeedToCheckOut(customer) != null) {
             OrderMessage message = new OrderMessage();
@@ -43,8 +45,9 @@ public class OrderService {
             message.setMsg("有房间未退，不能开房。");
             return message;
         }
-        roomDao.checkIn(roomNum);
-        Room room = roomDao.getByRoomNumber(roomNum);
+        roomDao.checkIn(model.getRoomNum());
+        Room room = roomDao.getByRoomNumber(model.getRoomNum());
+        Order order = new Order();
         order.setCustomer(customer);
         order.setRoom(room);
         //设置开房起始时间
@@ -60,8 +63,7 @@ public class OrderService {
     //清算
     private float liquidate(String roomNum, String idNum) {
         Order orderNeedToCheckOut = CustomerService.getOrderNeedToCheckOut(customerDao.getByIdNum(idNum));
-        if (orderNeedToCheckOut == null || !orderNeedToCheckOut.getRoom().getRoomNo().equals(roomNum) ||
-                orderNeedToCheckOut.getState() != Order.State.EXPIRE)
+        if (orderNeedToCheckOut == null || !orderNeedToCheckOut.getRoom().getRoomNo().equals(roomNum))
             return 0;
         long time = System.currentTimeMillis() - orderNeedToCheckOut.getDeadline().getTime();
         if (time < 0)
@@ -83,18 +85,19 @@ public class OrderService {
 
     public OrderMessage checkOutRoom(String roomNum, String idNum) {
         Order orderNeedToCheckOut = CustomerService.getOrderNeedToCheckOut(customerDao.getByIdNum(idNum));
-        if (orderNeedToCheckOut == null || !orderNeedToCheckOut.getRoom().getRoomNo().equals(roomNum) ||
-                orderNeedToCheckOut.getState() == Order.State.EXPIRE) {
+        if (orderNeedToCheckOut == null || !orderNeedToCheckOut.getRoom().getRoomNo().equals(roomNum)) {
             OrderMessage message = new OrderMessage();
             message.setCode(OrderMessage.Code.FAILED_CHECK_OUT_WRONG_MATCH);
             message.setMsg("身份证号与所退房间不符！");
             return message;
         }
-        float money = liquidate(roomNum, idNum);
-        if (money != 0) {
+        float money;
+        if (orderNeedToCheckOut.getState() == Order.State.EXPIRE) {
+            money = liquidate(roomNum, idNum);
             OrderMessage message = new OrderMessage();
             message.setCode(OrderMessage.Code.FAILED_CHECK_OUT_DEBT);
             message.setMsg("有欠款未付清！");
+            message.setPrice(money);
             return message;
         }
         roomDao.checkOut(roomNum);
@@ -114,6 +117,7 @@ public class OrderService {
     public List<Order> findAllExpireOrders() {
         List<Order> result = new ArrayList<>();
         result.addAll(listAllOrdersExpire());
+//        result.addAll(listAllOrdersValid().stream().filter(order -> order.getState() == Order.State.EXPIRE).collect(Collectors.toList()));
         for (Order order : listAllOrdersValid()) {
             if (order.getState() == Order.State.EXPIRE)
                 result.add(order);

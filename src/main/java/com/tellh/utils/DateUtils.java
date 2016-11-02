@@ -7,7 +7,7 @@ import java.util.Calendar;
  */
 public class DateUtils {
     public static int getDiscrepantDays(long disTime) {
-        return (int) (disTime / 1000 / 60 / 60 / 24);
+        return (int) (Math.ceil(disTime / 1000 / 60 / 60 / 24));
     }
     public static Calendar getDateShouldCheckOut(int days) {
         Calendar date = Calendar.getInstance();

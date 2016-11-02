@@ -45,27 +45,23 @@ public class CustomerServiceTest {
 
     @Test
     public void listAllOrders() throws Exception {
-        // TODO: 2016/10/31 有待测试
-        assertTrue(service.listAllOrders("110101198010018233").size() == 0);
+        assertTrue(service.listAllOrders("110101198010018233").size() == 2);
     }
 
     @Test
     public void getByIdNumWithOrders() throws Exception {
-        // TODO: 2016/10/31 有待测试
-        assertTrue(service.getByIdNumWithOrders("110101198010018233").getOrders().size() == 0);
+        assertTrue(service.getByIdNumWithOrders("110101198010018233").getOrders().size() == 2);
     }
 
     @Test
     public void getRoomHasCheckIn() throws Exception {
-        // TODO: 2016/11/1 有待测试
-        assertTrue(service.getRoomHasCheckIn("110101198010018233").getRoomNo().equals(""));
+        assertTrue(service.getRoomHasCheckIn("110101198010018233").getRoomNo().equals("100"));
     }
 
     @Test
     public void getRoomNeedToCheckOut() throws Exception {
-        // TODO: 2016/11/1 有待测试
-        assertTrue(service.getRoomNeedToCheckOut("110101198010018233").getRoomNo().equals(""));
-        assertNull(service.getRoomNeedToCheckOut("110101198010018233"));
+        assertTrue(service.getRoomNeedToCheckOut("110101198010018233").getRoomNo().equals("100"));
+        assertNull(service.getRoomNeedToCheckOut("110101198010016414"));
     }
 
 }

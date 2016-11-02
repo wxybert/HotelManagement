@@ -67,7 +67,7 @@ public class CustomerService {
         if (orders.isEmpty())
             return null;
         Order order = orders.get(0);
-        if (order.getState() == Order.State.CHECK_OUT || order.getState() == Order.State.PAID)
+        if (order.getState() == Order.State.CHECK_OUT)
             return null;
         return order.getRoom();
     }
@@ -77,7 +77,7 @@ public class CustomerService {
         if (orders.isEmpty())
             return null;
         Order order = orders.get(0);
-        if (order.getState() == Order.State.CHECK_OUT || order.getState() == Order.State.PAID)
+        if (order.getState() == Order.State.CHECK_OUT)
             return null;
         return order;
     }

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by tlh on 2016/10/31.
  */
-
+// TODO: 2016/11/2  多条件动态查询，过滤
 @Service
 public class RoomService {
     @Autowired
@@ -52,14 +52,4 @@ public class RoomService {
         return dao.listAllNotFreeRooms();
     }
 
-//    public void checkIn(String roomNum) {
-//        dao.checkIn(roomNum);
-//         TODO: 2016/10/31 插入订单记录
-//    }
-
-//    public void checkOut(String roomNum) {
-//        dao.checkOut(roomNum);
-//         TODO: 2016/10/31 更新订单状态
-//    }
-//     TODO: 2016/11/1 动态条件查询，过滤
 }

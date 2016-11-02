@@ -44,4 +44,13 @@ public class OrderMessage {
     public void setPrice(float price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

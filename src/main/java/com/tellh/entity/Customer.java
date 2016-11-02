@@ -28,7 +28,7 @@ public class Customer {
     private String password;
     private boolean isVIP;
     @OneToMany(mappedBy = "customer")
-    @OrderBy("deadline desc")
+    @OrderBy("deadline desc,dCheckIn desc")
     private List<Order> orders;
 
     public Order getValidOrder() {
@@ -95,5 +95,13 @@ public class Customer {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "name='" + name + '\'' +
+                ", idNum='" + idNum + '\'' +
+                '}';
     }
 }
