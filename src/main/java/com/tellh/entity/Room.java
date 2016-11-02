@@ -13,6 +13,7 @@ import java.util.List;
         @NamedQuery(name = "ByRoomNumber", query = "SELECT r FROM Room r WHERE roomNo=:roomNum"),
         @NamedQuery(name = "ByType", query = "SELECT r FROM Room r WHERE room_type=:room_type"),
         @NamedQuery(name = "ListIsFree", query = "SELECT r FROM Room r WHERE isFree=true"),
+        @NamedQuery(name = "ListIsNotFree", query = "SELECT r FROM Room r WHERE isFree=false"),
         @NamedQuery(name = "ListIsFreeByType", query = "SELECT r FROM Room r WHERE isFree=true and room_type=:type")
 })
 @Entity

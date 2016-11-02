@@ -48,6 +48,10 @@ public class RoomService {
         return dao.listAll(pageIndex, pageSize);
     }
 
+    public List<Room> listAllAllocatedRooms() {
+        return dao.listAllNotFreeRooms();
+    }
+
 //    public void checkIn(String roomNum) {
 //        dao.checkIn(roomNum);
 //         TODO: 2016/10/31 插入订单记录

@@ -67,18 +67,18 @@ public class CustomerService {
         if (orders.isEmpty())
             return null;
         Order order = orders.get(0);
-        if (order.getState() == Order.State.CHECK_OUT)
+        if (order.getState() == Order.State.CHECK_OUT || order.getState() == Order.State.PAID)
             return null;
         return order.getRoom();
     }
 
-    public static Room getRoomNeedToCheckOut(Customer customer) {
+    public static Order getOrderNeedToCheckOut(Customer customer) {
         List<Order> orders = customer.getOrders();
         if (orders.isEmpty())
             return null;
         Order order = orders.get(0);
-        if (order.getState() == Order.State.CHECK_OUT)
+        if (order.getState() == Order.State.CHECK_OUT || order.getState() == Order.State.PAID)
             return null;
-        return order.getRoom();
+        return order;
     }
 }

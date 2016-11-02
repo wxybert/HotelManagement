@@ -33,6 +33,11 @@ public class RoomDao extends BaseDao {
                 .list();
     }
 
+    public List<Room> listAllNotFreeRooms() {
+        return getSession().getNamedQuery("ListIsNotFree")
+                .list();
+    }
+
     //分頁
     public List<Room> listAllFreeRooms(int pageIndex, int pageSize) {
         return getSession().getNamedQuery("ListIsFree")

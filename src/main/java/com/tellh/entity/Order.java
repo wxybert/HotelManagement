@@ -10,15 +10,16 @@ import java.util.Date;
  * Created by tlh on 2016/10/30.
  */
 @NamedQueries({
-        @NamedQuery(name = "ByState",query = "select o from Order o where state=:state")
+        @NamedQuery(name = "ByState", query = "select o from Order o where state=:state")
 })
 @Entity
 @Table(name = "order", schema = "hotel_management")
 public class Order {
     public enum State {
         VALID,//有效
-        CHECK_OUT,//已退房
-        EXPIRE//逾期未退房
+        CHECK_OUT,//已退房，交还押金
+        EXPIRE,//逾期未退房
+        PAID//已结算
     }
 
     @Id
@@ -45,6 +46,9 @@ public class Order {
     }
 
     public State getState() {
+        // TODO: 2016/11/2 测试是否会自动flush
+        if (state != State.EXPIRE && new Timestamp(System.currentTimeMillis()).after(deadline))
+            state = State.EXPIRE;
         return state;
     }
 
