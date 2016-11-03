@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 public class CharSetFilter implements Filter {
     private FilterConfig conf;
@@ -24,7 +25,7 @@ public class CharSetFilter implements Filter {
         response.addHeader("Access-Control-Allow-Origin", access);
         response.addHeader("Access-Control-Allow-Methods", "POST,GET");
         response.addHeader("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, Content-Language, Cache-Control, X-E4M-With");
-        chain.doFilter(new MyHttpServletRequest(request), response);
+        chain.doFilter(request, response);
     }
 
     @Override
@@ -48,15 +49,14 @@ public class CharSetFilter implements Filter {
         @Override
         public String getParameter(String name) {
             String value = this.requst.getParameter(name);
-            if (value == null) {
+            if (value == null)
                 return null;
-            }
             //如果不是get请求
-            if (!this.requst.getMethod().equalsIgnoreCase("get")) {
-                return value;
-            }
+//            if (!this.requst.getMethod().equalsIgnoreCase("get")) {
+//                return value;
+//            }
             try {
-                value = new String(value.getBytes("ISO8859-1"), this.requst.getCharacterEncoding());
+                value = new String(value.getBytes("ISO-8859-1"), this.requst.getCharacterEncoding());
                 return value;
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);

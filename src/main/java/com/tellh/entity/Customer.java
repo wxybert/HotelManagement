@@ -1,5 +1,7 @@
 package com.tellh.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.tellh.filter.SimplePropertyFilter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -14,18 +16,18 @@ import java.util.List;
 })
 @Entity
 @Table(name = "customer", schema = "hotel_management")
-public class Customer {
+public class Customer extends Account {
     @Id
     @GenericGenerator(name = "idGenerator", strategy = "native")
     @GeneratedValue(generator = "idGenerator")
     @Column(name = "cid")
     private int id;
-    @Column(nullable = false)
-    private String name;
+    //    @Column(nullable = false)
+//    private String name;
     @Column(unique = true, nullable = false)
     private String idNum;
-    @Column(nullable = false)
-    private String password;
+    //    @Column(nullable = false)
+//    private String password;
     private boolean isVIP;
     @OneToMany(mappedBy = "customer")
     @OrderBy("deadline desc,dCheckIn desc")
@@ -49,14 +51,6 @@ public class Customer {
         this.password = password;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public boolean isVIP() {
         return isVIP;
     }
@@ -71,14 +65,6 @@ public class Customer {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getIdNum() {

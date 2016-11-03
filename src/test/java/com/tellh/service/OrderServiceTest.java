@@ -21,8 +21,8 @@ public class OrderServiceTest {
     public void orderRoom() throws Exception {
         OrderModel model = new OrderModel();
         model.setDays(1);
-        model.setCustomerIdNum("110101198010016414");
-        model.setRoomNum("101");
+        model.setCustomerIdNum("110101198010011090");
+        model.setRoomNum("102");
         OrderMessage orderMessage = service.orderRoom(model);
         System.out.println(orderMessage);
     }

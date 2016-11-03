@@ -1,5 +1,6 @@
 package com.tellh.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -38,9 +39,11 @@ public class Order {
     private Room room;
 
     @Transient
+    @JSONField(serialize = false)
     private int days;
     private State state = State.VALID;
 
+    @JSONField(serialize = false)
     public boolean isValid() {
         return deadline.after(new Date());
     }

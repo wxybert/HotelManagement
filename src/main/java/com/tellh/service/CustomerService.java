@@ -4,9 +4,11 @@ import com.tellh.dao.CustomerDao;
 import com.tellh.entity.Customer;
 import com.tellh.entity.Order;
 import com.tellh.entity.Room;
+import com.tellh.entity.model.OrderForCustomerWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,13 +48,13 @@ public class CustomerService {
 
     public Customer login(String idNum, String password) {
         Customer customer = customerDao.getByIdNumWithOrders(idNum);
-        if (customer == null || !customer.getPassword().equals(password))
+        if (customer == null || customer.getPassword() == null || !customer.getPassword().equals(password))
             return null;
-        return customer;
+        return new CustomerWrapper(customer);
     }
 
     public List<Order> listAllOrders(String idNum) {
-        return customerDao.listAllOrders(idNum);
+        return OrderForCustomerWrapper.wrapList(customerDao.listAllOrders(idNum));
     }
 
     public Room getRoomHasCheckIn(String idNum) {
@@ -79,6 +81,20 @@ public class CustomerService {
         Order order = orders.get(0);
         if (order.getState() == Order.State.CHECK_OUT)
             return null;
-        return order;
+        return new OrderForCustomerWrapper(order);
+    }
+
+    private static class CustomerWrapper extends Customer {
+        CustomerWrapper(Customer customer) {
+            setId(customer.getId());
+            setVIP(customer.isVIP());
+            setName(customer.getName());
+            setIdNum(customer.getIdNum());
+            setPassword(customer.getPassword());
+            List<Order> orders = customer.getOrders();
+            if (orders == null)
+                return;
+            setOrders(OrderForCustomerWrapper.wrapList(orders));
+        }
     }
 }

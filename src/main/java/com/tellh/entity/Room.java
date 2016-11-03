@@ -1,5 +1,6 @@
 package com.tellh.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -44,6 +45,7 @@ public class Room {
     private String desc;
     @OneToMany(mappedBy = "room")
     @OrderBy("deadline desc")
+    @JSONField(serialize = false)
     private List<Order> orders;
 
     public Room() {
@@ -59,6 +61,7 @@ public class Room {
         this.desc = desc;
     }
 
+    @JSONField(serialize = false)
     public Order getValidOrder() {
         if (orders.isEmpty())
             return null;
