@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  * Created by tlh on 2016/10/31.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:HibernateApplicationContext.xml")
+@ContextConfiguration(locations = "classpath:SpringAppContext.xml")
 public class CustomerServiceTest {
     @Autowired
     private CustomerService service;

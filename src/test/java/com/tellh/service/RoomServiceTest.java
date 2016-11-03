@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Created by tlh on 2016/10/31.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:HibernateApplicationContext.xml")
+@ContextConfiguration(locations = "classpath:SpringAppContext.xml")
 public class RoomServiceTest {
     @Autowired
     RoomService service;

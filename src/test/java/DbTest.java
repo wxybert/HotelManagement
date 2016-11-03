@@ -17,7 +17,7 @@ import java.util.List;
  * Created by tlh on 2016/10/30.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:HibernateApplicationContext.xml")
+@ContextConfiguration(locations = "classpath:SpringAppContext.xml")
 public class DbTest {
     @Autowired
     SessionFactory sessionFactory;
