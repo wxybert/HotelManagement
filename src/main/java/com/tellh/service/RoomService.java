@@ -2,6 +2,7 @@ package com.tellh.service;
 
 import com.tellh.dao.RoomDao;
 import com.tellh.entity.Room;
+import com.tellh.entity.model.RoomFilterModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,6 @@ import java.util.List;
 /**
  * Created by tlh on 2016/10/31.
  */
-// TODO: 2016/11/2  多条件动态查询，过滤
 @Service
 public class RoomService {
     @Autowired
@@ -52,4 +52,7 @@ public class RoomService {
         return dao.listAllNotFreeRooms();
     }
 
+    public List<Room> filter(RoomFilterModel model) {
+        return dao.filter(model);
+    }
 }

@@ -1,6 +1,7 @@
 package com.tellh.service;
 
 import com.tellh.entity.Room;
+import com.tellh.entity.model.RoomFilterModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,6 +68,15 @@ public class RoomServiceTest {
         int pageIndex = 2;//第二页
         int pageSize = 5;//每页条目数
         System.out.println(service.listAll(pageIndex, pageSize));
+    }
+
+    @Test
+    public void filter() throws Exception {
+        RoomFilterModel model = new RoomFilterModel();
+        model.setSize(2);
+        model.setType(Room.Type.DELUXE_STANDARD);
+        model.setPrice(500);
+        System.out.println(service.filter(model));
     }
 
 }

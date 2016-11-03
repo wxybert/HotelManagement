@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 /**
  * Created by tlh on 2016/10/30.
  */
@@ -122,8 +124,19 @@ public class DbTest {
             session.save(customer);
         }
     }
+
     @Test
-    public void testdb(){
+    public void alterPrice() {
+        List<Room> list = session.createQuery("From Room r where r.size=1 and r.type=:type", Room.class)
+                .setParameter("type", Room.Type.DELUXE_STANDARD)
+                .list();
+        for (Room room : list) {
+            room.setPrice(208);
+        }
+    }
+
+    @Test
+    public void testdb() {
 
     }
 }
