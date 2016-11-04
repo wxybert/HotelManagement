@@ -90,7 +90,7 @@ public class RoomDao extends BaseDao {
         return getByRoomNumber(roomNo).getOrders();
     }
 
-    public List<Room> filter(RoomFilterModel model) {
+    public List<Room> filter(RoomFilterModel model, int pageIndex, int pageSize) {
         Conjunction conjunction = Restrictions.conjunction();
         conjunction.add(Restrictions.eq("isFree", model.isFree()));
         if (model.getPrice() > 0)
@@ -100,6 +100,8 @@ public class RoomDao extends BaseDao {
         if (model.getSize() != 0)
             conjunction.add(Restrictions.eq("size", model.getSize()));
         return getSession().createCriteria(Room.class)
+                .setFirstResult((pageIndex - 1) * pageSize)
+                .setMaxResults(pageSize)
                 .add(conjunction).list();
     }
 }

@@ -67,7 +67,7 @@ public class CustomerController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{userId}/orders", method = RequestMethod.GET)
+    @RequestMapping(value = "/customer/{userId}/orders", method = RequestMethod.GET)
     public List<Order> listAllOrders(@PathVariable("userId") String idNum, HttpServletRequest request) {
         Account account = AccountUtils.getUserFromSession(request);
         if (account instanceof Employee || ((Customer) account).getIdNum().equals(idNum))
@@ -76,7 +76,7 @@ public class CustomerController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{userId}/room/check_in", method = RequestMethod.GET)
+    @RequestMapping(value = "/customer/{userId}/room/check_in", method = RequestMethod.GET)
     public Room getRoomHasCheckIn(@PathVariable("userId") String idNum, HttpServletRequest request) {
         Account account = AccountUtils.getUserFromSession(request);
         if (account instanceof Employee || ((Customer) account).getIdNum().equals(idNum))
@@ -85,7 +85,7 @@ public class CustomerController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{userId}/room/need_check_out", method = RequestMethod.GET)
+    @RequestMapping(value = "/customer/{userId}/room/need_check_out", method = RequestMethod.GET)
     public Room getRoomNeedToCheckOut(@PathVariable("userId") String idNum, HttpServletRequest request) {
         Account account = AccountUtils.getUserFromSession(request);
         if (account instanceof Employee || ((Customer) account).getIdNum().equals(idNum))
@@ -96,7 +96,6 @@ public class CustomerController {
     @ResponseBody
     @ExceptionHandler({NullPointerException.class})
     public AccountMessage handleException(Exception e) {
-        e.printStackTrace();
         return new AccountMessage("请求的用户还没注册", AccountMessage.Code.NOT_FOUND);
     }
 }

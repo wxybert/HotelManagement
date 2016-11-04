@@ -52,7 +52,7 @@ public class RoomService {
         return dao.listAllNotFreeRooms();
     }
 
-    public List<Room> filter(RoomFilterModel model) {
-        return dao.filter(model);
+    public List<Room> filter(RoomFilterModel model, int pageIndex, int pageSize) {
+        return dao.filter(model, pageIndex, pageSize);
     }
 }
