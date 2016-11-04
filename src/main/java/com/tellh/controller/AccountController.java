@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.tellh.entity.*;
 import com.tellh.service.CustomerService;
+import com.tellh.service.EmployeeService;
 import com.tellh.utils.AccountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by tlh on 2016/11/3.
  */
 @Controller
-public class CustomerController {
+public class AccountController {
     static {
         //关闭循环引用
         JSON.DEFAULT_GENERATE_FEATURE |= SerializerFeature.DisableCircularReferenceDetect.getMask();
@@ -24,22 +25,35 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private EmployeeService employeeService;
 
     @ResponseBody
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/customer/login", method = RequestMethod.POST)
     public AccountMessage login(String idNum, String password, HttpServletRequest request) {
         Customer customer = customerService.login(idNum, password);
+        return getMessage(request, customer);
+    }
+
+    private AccountMessage getMessage(HttpServletRequest request, Account account) {
         AccountMessage message = new AccountMessage();
-        if (customer != null) {
+        if (account != null) {
             message.setCode(AccountMessage.Code.SUCCESS_LOGIN);
             message.setMsg("登录成功");
-            message.setAccount(customer);
-            AccountUtils.addAccountIntoSession(customer, request);
+            message.setAccount(account);
+            AccountUtils.addAccountIntoSession(account, request);
         } else {
             message.setCode(AccountMessage.Code.FAILED_LOGIN);
             message.setMsg("登录失败");
         }
         return message;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/employee/login", method = RequestMethod.POST)
+    public AccountMessage login(HttpServletRequest request, String login, String password) {
+        Employee employee = employeeService.login(login, password);
+        return getMessage(request, employee);
     }
 
     @ResponseBody

@@ -29,13 +29,13 @@ public class OrderServiceTest {
 
     @Test
     public void paidDebt() throws Exception {
-        service.paidDebt("101", "110101198010016414");
-        System.out.println(service.checkOutRoom("101", "110101198010016414"));;
+        service.paidDebt("110101198010016414");
+        System.out.println(service.checkOutRoom("110101198010016414"));;
     }
 
     @Test
     public void checkOutRoom() throws Exception {
-        System.out.println(service.checkOutRoom("101", "110101198010016414"));
+        System.out.println(service.checkOutRoom("110101198010016414"));
     }
 
     @Test

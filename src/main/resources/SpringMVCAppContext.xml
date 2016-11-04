@@ -19,7 +19,8 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/customer/login"/>
+            <mvc:exclude-mapping path="/employee/login"/>
             <mvc:exclude-mapping path="/register"/>
             <mvc:exclude-mapping path="/room/**"/>
             <bean class="com.tellh.filter.LoginInterpreter"/>

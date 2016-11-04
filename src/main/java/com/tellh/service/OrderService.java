@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by tlh on 2016/11/1.
@@ -39,14 +38,21 @@ public class OrderService {
         }
         Customer customer = customerDao.getByIdNum(model.getCustomerIdNum());
         //有房间未退，不能开房
-        if (CustomerService.getOrderNeedToCheckOut(customer) != null) {
+        if (CustomerService.getOrderNeedToCheckOut_(customer) != null) {
             OrderMessage message = new OrderMessage();
             message.setCode(OrderMessage.Code.FAILED_CHECK_IN);
             message.setMsg("有房间未退，不能开房。");
             return message;
         }
-        roomDao.checkIn(model.getRoomNum());
-        Room room = roomDao.getByRoomNumber(model.getRoomNum());
+        String roomNum = model.getRoomNum();
+        if (roomNum == null) {
+            OrderMessage message = new OrderMessage();
+            message.setCode(OrderMessage.Code.FAILED_CHECK_IN);
+            message.setMsg("您要订哪间房呢？");
+            return message;
+        }
+        roomDao.checkIn(roomNum);
+        Room room = roomDao.getByRoomNumber(roomNum);
         Order order = new Order();
         order.setCustomer(customer);
         order.setRoom(room);
@@ -62,7 +68,7 @@ public class OrderService {
 
     //清算
     private float liquidate(String roomNum, String idNum) {
-        Order orderNeedToCheckOut = CustomerService.getOrderNeedToCheckOut(customerDao.getByIdNum(idNum));
+        Order orderNeedToCheckOut = CustomerService.getOrderNeedToCheckOut_(customerDao.getByIdNum(idNum));
         if (orderNeedToCheckOut == null || !orderNeedToCheckOut.getRoom().getRoomNo().equals(roomNum))
             return 0;
         long time = System.currentTimeMillis() - orderNeedToCheckOut.getDeadline().getTime();
@@ -75,28 +81,37 @@ public class OrderService {
     }
 
     //支付余账
-    public void paidDebt(String roomNum, String idNum) {
+    public void paidDebt(String idNum) {
         Order orderNeedToCheckOut = CustomerService.getOrderNeedToCheckOut(customerDao.getByIdNum(idNum));
-        if (orderNeedToCheckOut == null || !orderNeedToCheckOut.getRoom().getRoomNo().equals(roomNum) ||
-                orderNeedToCheckOut.getState() != Order.State.EXPIRE)
+        if (orderNeedToCheckOut == null)
+            return;
+        if (orderNeedToCheckOut.getState() != Order.State.EXPIRE)
             return;
         orderNeedToCheckOut.setState(Order.State.PAID);
     }
 
-    public OrderMessage checkOutRoom(String roomNum, String idNum) {
-        Order orderNeedToCheckOut = CustomerService.getOrderNeedToCheckOut(customerDao.getByIdNum(idNum));
-        if (orderNeedToCheckOut == null || !orderNeedToCheckOut.getRoom().getRoomNo().equals(roomNum)) {
+    public OrderMessage checkOutRoom(String idNum) {
+        Customer customer = customerDao.getByIdNum(idNum);
+        if (customer == null) {
             OrderMessage message = new OrderMessage();
-            message.setCode(OrderMessage.Code.FAILED_CHECK_OUT_WRONG_MATCH);
-            message.setMsg("身份证号与所退房间不符！");
+            message.setCode(OrderMessage.Code.FAILED_CHECK_OUT_NOT_FOUND);
+            message.setMsg("没有此用户！");
             return message;
         }
+        Order orderNeedToCheckOut = CustomerService.getOrderNeedToCheckOut(customer);
+        if (orderNeedToCheckOut == null) {
+            OrderMessage message = new OrderMessage();
+            message.setCode(OrderMessage.Code.FAILED_CHECK_OUT_NOT_FOUND);
+            message.setMsg("没有要退的房");
+            return message;
+        }
+        String roomNum = orderNeedToCheckOut.getRoom().getRoomNo();
         float money;
         if (orderNeedToCheckOut.getState() == Order.State.EXPIRE) {
             money = liquidate(roomNum, idNum);
             OrderMessage message = new OrderMessage();
             message.setCode(OrderMessage.Code.FAILED_CHECK_OUT_DEBT);
-            message.setMsg("有欠款未付清！");
+            message.setMsg("有欠款未付清！请到柜台工作人员办理退房手续！");
             message.setPrice(money);
             return message;
         }

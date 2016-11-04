@@ -22,17 +22,15 @@ public class Customer extends Account {
     @GeneratedValue(generator = "idGenerator")
     @Column(name = "cid")
     private int id;
-    //    @Column(nullable = false)
-//    private String name;
     @Column(unique = true, nullable = false)
     private String idNum;
-    //    @Column(nullable = false)
-//    private String password;
     private boolean isVIP;
+    private String phone;
     @OneToMany(mappedBy = "customer")
     @OrderBy("deadline desc,dCheckIn desc")
     private List<Order> orders;
 
+    @JSONField(serialize = false)
     public Order getValidOrder() {
         if (orders.isEmpty())
             return null;
@@ -73,6 +71,14 @@ public class Customer extends Account {
 
     public void setIdNum(String idNum) {
         this.idNum = idNum;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public List<Order> getOrders() {

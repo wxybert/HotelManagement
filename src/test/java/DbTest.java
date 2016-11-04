@@ -136,6 +136,16 @@ public class DbTest {
     }
 
     @Test
+    public void alterPhone() {
+        List<Customer> list = session.createQuery("From Customer r", Customer.class)
+                .list();
+        int i = 100;
+        for (Customer customer : list) {
+            customer.setPhone("15172365" + String.valueOf(i++));
+        }
+    }
+
+    @Test
     public void testdb() {
 
     }

@@ -6,7 +6,7 @@ package com.tellh.entity;
 public class OrderMessage {
     public enum Code {
         SUCCESS_Check_IN, FAILED_CHECK_IN,
-        SUCCESS_Check_OUT, FAILED_CHECK_OUT_WRONG_MATCH, FAILED_CHECK_OUT_DEBT
+        SUCCESS_Check_OUT, FAILED_CHECK_OUT_NOT_FOUND, FAILED_CHECK_OUT_DEBT
     }
 
     private Code code;

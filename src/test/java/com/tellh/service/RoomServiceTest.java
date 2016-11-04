@@ -76,7 +76,7 @@ public class RoomServiceTest {
         model.setSize(2);
         model.setType(Room.Type.DELUXE_STANDARD);
         model.setPrice(500);
-        System.out.println(service.filter(model));
+        System.out.println(service.filter(model, 1, 10));
     }
 
 }

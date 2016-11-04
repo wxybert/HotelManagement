@@ -74,7 +74,7 @@ public class CustomerService {
         return order.getRoom();
     }
 
-    public static Order getOrderNeedToCheckOut(Customer customer) {
+    public static Order getOrderNeedToCheckOut_(Customer customer) {
         List<Order> orders = customer.getOrders();
         if (orders.isEmpty())
             return null;
@@ -84,6 +84,16 @@ public class CustomerService {
         return new OrderForCustomerWrapper(order);
     }
 
+    public static Order getOrderNeedToCheckOut(Customer customer) {
+        List<Order> orders = customer.getOrders();
+        if (orders.isEmpty())
+            return null;
+        Order order = orders.get(0);
+        if (order.getState() == Order.State.CHECK_OUT)
+            return null;
+        return order;
+    }
+
     private static class CustomerWrapper extends Customer {
         CustomerWrapper(Customer customer) {
             setId(customer.getId());
@@ -91,6 +101,7 @@ public class CustomerService {
             setName(customer.getName());
             setIdNum(customer.getIdNum());
             setPassword(customer.getPassword());
+            setPhone(customer.getPhone());
             List<Order> orders = customer.getOrders();
             if (orders == null)
                 return;
