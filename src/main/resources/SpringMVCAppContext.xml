@@ -23,7 +23,14 @@
             <mvc:exclude-mapping path="/employee/login"/>
             <mvc:exclude-mapping path="/register"/>
             <mvc:exclude-mapping path="/room/**"/>
+            <mvc:exclude-mapping path="/*.html"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/js/**" />
             <bean class="com.tellh.filter.LoginInterpreter"/>
         </mvc:interceptor>
     </mvc:interceptors>
+    <mvc:default-servlet-handler/>
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/*.html" location="/html/"/>
 </beans>
